@@ -14,6 +14,12 @@
   overflow-y: auto;
 }
 
+.constructorItems {
+   display: flex;
+   flex-direction: column;
+   gap: 16px
+}
+
 .orderSummary {
   display: flex;
   justify-content: flex-end;

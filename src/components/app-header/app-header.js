@@ -9,29 +9,27 @@ import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-class AppHeader extends React.Component {
-  render() {
-    return (
-      <header className={styles.appHeader}>
-        <div className={styles.headerGroup}>
-          <AppHeaderButton title="Конструктор">
-            <BurgerIcon type="secondary" />
-          </AppHeaderButton>
-          <AppHeaderButton title="Лента заказов">
-            <ListIcon type="secondary" />
-          </AppHeaderButton>
-        </div>
-        <a href="/">
-          <Logo />
-        </a>
-        <div className={`${styles.headerGroup} ${styles.profileGroup}`}>
-          <AppHeaderButton title="Личный кабинет">
-            <ProfileIcon type="secondary" />
-          </AppHeaderButton>
-        </div>
-      </header>
-    );
-  }
-}
+const AppHeader = () => {
+  return (
+    <header className={styles.appHeader}>
+      <div className={styles.headerGroup}>
+        <AppHeaderButton title="Конструктор">
+          <BurgerIcon type="secondary" />
+        </AppHeaderButton>
+        <AppHeaderButton title="Лента заказов">
+          <ListIcon type="secondary" />
+        </AppHeaderButton>
+      </div>
+      <a href="/">
+        <Logo />
+      </a>
+      <div className={`${styles.headerGroup} ${styles.profileGroup}`}>
+        <AppHeaderButton title="Личный кабинет">
+          <ProfileIcon type="secondary" />
+        </AppHeaderButton>
+      </div>
+    </header>
+  );
+};
 
 export default AppHeader;

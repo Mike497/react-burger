@@ -10,6 +10,10 @@
   flex-grow: 1;
 }
 
+.ingredientsTab {
+  display: flex;
+}
+
 .itemsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
