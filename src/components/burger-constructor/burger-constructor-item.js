@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const BurgerConstructorItem = ({ type, isLocked, text, price, thumbnail }) => {
   return (

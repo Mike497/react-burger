@@ -5,12 +5,15 @@ import { ingredientPropType } from '../../utils/types.js';
 
 import styles from './burger-ingredients.module.css';
 
-import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const IngredientCard = ({ item }) => {
+const IngredientCard = ({ item, onIngredientClick }) => {
+  const handleOnClick = () => {
+    onIngredientClick(item);
+  };
+
   return (
-    <article className={styles.ingredientCard}>
+    <article className={styles.ingredientCard} onClick={handleOnClick}>
       <Counter count={1} size="default" extraClass="m-1" />
       <img
         className={styles.cardImage}
@@ -32,6 +35,7 @@ const IngredientCard = ({ item }) => {
 
 IngredientCard.propTypes = {
   item: ingredientPropType.isRequired,
+  onIngredientClick: PropTypes.func.isRequired
 };
 
 export default IngredientCard;

@@ -8,7 +8,7 @@ import styles from './burger-ingredients.module.css';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const BurgerIngredients = ({ items }) => {
+const BurgerIngredients = ({ items, onIngredientClick }) => {
   const [currentTab, setCurrentTab] = useState('bun');
 
   return (
@@ -43,14 +43,17 @@ const BurgerIngredients = ({ items }) => {
         <IngredientsList
           items={items.filter((item) => item.type === 'bun')}
           title="Булки"
+          onIngredientClick={onIngredientClick}
         />
         <IngredientsList
           items={items.filter((item) => item.type === 'sauce')}
           title="Соусы"
+          onIngredientClick={onIngredientClick}
         />
         <IngredientsList
           items={items.filter((item) => item.type === 'main')}
           title="Начинки"
+          onIngredientClick={onIngredientClick}
         />
       </div>
     </div>
@@ -59,6 +62,7 @@ const BurgerIngredients = ({ items }) => {
 
 BurgerIngredients.propTypes = {
   items: PropTypes.arrayOf(ingredientPropType).isRequired,
+  onIngredientClick: PropTypes.func.isRequired
 };
 
 export default BurgerIngredients;
