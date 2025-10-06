@@ -1,0 +1,39 @@
+.constructorPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: calc(100vh - var(--header-height) - var(--main-padding));
+  padding-top: 100px;
+  box-sizing: border-box;
+}
+
+.fillingsScrollArea {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-left: 32px;
+  padding-right: 16px;
+}
+
+.constructorItems {
+   display: flex;
+   flex-direction: column;
+   gap: 16px
+}
+
+.orderSummary {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.totalPrice {
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

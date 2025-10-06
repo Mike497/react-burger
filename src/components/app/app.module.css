@@ -1,0 +1,14 @@
+.appContainer {
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.appBody {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  overflow: hidden;
+  flex-grow: 1;
+}

@@ -1,0 +1,51 @@
+.ingredientsPanel {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--header-height) - var(--main-padding));
+}
+
+.ingredientsScrollArea {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.ingredientsTab {
+  display: flex;
+}
+
+.itemsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 24px;
+  row-gap: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.ingredientCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.ingredientsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 24px;
+  row-gap: 40px;
+}
+
+.cardImage {
+  display: block;
+  object-fit: contain;
+}
+
+.cardPrice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
