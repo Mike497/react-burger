@@ -19,8 +19,7 @@
 
 .constructorItems {
    display: flex;
-   flex-direction: column;
-   gap: 16px
+   align-items: center;
 }
 
 .orderSummary {
@@ -36,4 +35,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.dragItemSpacer {
+  width: 24px;
 }

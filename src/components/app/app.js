@@ -1,47 +1,34 @@
 import React from 'react';
-
+import { useSelector, useDispatch } from 'react-redux';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { loadIngredients } from '../../utils/burgers-api';
 import Modal from '../modal/modal';
 import OrderDetails from '../modal/order-details';
 import IngredientDetails from '../modal/ingredient-details';
-
 import styles from './app.module.css';
+import { getIngredients } from '../../services/ingredientsSlice';
+import { clearIngredient } from '../../services/detailsSlice';
+import { clearOrder } from '../../services/orderSlice';
 
 const App = () => {
-  const [ingredients, setIngredients] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [hasError, setHasError] = React.useState(false);
+  const dispatch = useDispatch();
 
-  const [isOrderModalOpen, setOrderModalOpen] = React.useState(false);
-  const [selectedIngredient, setSelectedIngredient] = React.useState(null);
-
-  const ingredientClick = (ingredient) => {
-    setSelectedIngredient(ingredient);
-  };
-  const orderClick = () => {
-    setOrderModalOpen(true);
-  };
-  const closeModal = () => {
-    setOrderModalOpen(false);
-    setSelectedIngredient(null);
-  };
+  const { items, isLoading, hasError } = useSelector(state => state.ingredients);
+  const selectedIngredient = useSelector(state => state.details.selectedIngredient);
+  const orderNumber = useSelector(state => state.order.orderNumber);
 
   React.useEffect(() => {
-    loadIngredients()
-      .then(response => {
-        setIngredients(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-        setHasError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    dispatch(getIngredients());
+  }, [dispatch]);
+
+  const handleCloseIngredientModal = () => {
+    dispatch(clearIngredient());
+  };
+
+  const handleCloseOrderModal = () => {
+    dispatch(clearOrder());
+  };
 
   return (
     <>
@@ -50,24 +37,24 @@ const App = () => {
         <main className={styles.appBody}>
           {hasError && <p>Произошла ошибка при загрузке данных!</p>}
           {isLoading && <p>Загрузка ингредиентов...</p>}
-          {!isLoading && !hasError && ingredients.length > 0 && (
+          {!isLoading && !hasError && items.length > 0 && (
             <>
-              <BurgerIngredients items={ingredients} onIngredientClick={ingredientClick} />
-              <BurgerConstructor items={ingredients} onOrderClick={orderClick} />
+              <BurgerIngredients />
+              <BurgerConstructor />
             </>
           )}
         </main>
       </div>
 
-      {isOrderModalOpen && (
-        <Modal onClose={closeModal}>
+      {orderNumber && (
+        <Modal onClose={handleCloseOrderModal}>
           <OrderDetails />
         </Modal>
       )}
 
       {selectedIngredient && (
-        <Modal title="Детали ингредиента" onClose={closeModal}>
-          <IngredientDetails ingredient={selectedIngredient} />
+        <Modal title="Детали ингредиента" onClose={handleCloseIngredientModal}>
+          <IngredientDetails />
         </Modal>
       )}
     </>
