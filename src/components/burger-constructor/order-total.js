@@ -1,18 +1,21 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-
 import styles from './burger-constructor.module.css';
-
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const OrderTotal = ({ onOrderClick }) => {
+const OrderTotal = ({ totalPrice, onOrderClick, isButtonDisabled }) => {
   return (
-      <div className={styles.orderSummary}>
+      <div className={`${styles.orderSummary} mt-10 pr-4`}>
         <div className={styles.totalPrice}>
-          <span className="text text_type_digits-medium">610</span>
+          <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large" onClick={onOrderClick}>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={onOrderClick}
+          disabled={isButtonDisabled}
+        >
           Оформить заказ
         </Button>
       </div>
@@ -20,7 +23,9 @@ const OrderTotal = ({ onOrderClick }) => {
 };
 
 OrderTotal.propTypes = {
-  onOrderClick: PropTypes.func.isRequired
+  totalPrice: PropTypes.number.isRequired,
+  onOrderClick: PropTypes.func.isRequired,
+  isButtonDisabled: PropTypes.bool,
 };
 
 export default OrderTotal;
