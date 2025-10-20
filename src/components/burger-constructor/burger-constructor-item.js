@@ -80,7 +80,6 @@ BurgerConstructorItem.propTypes = {
   type: PropTypes.string,
   isLocked: PropTypes.bool,
   item:ingredientPropType.isRequired,
-  index: PropTypes.number.isRequired,
   handleClose: PropTypes.func
 };
 
