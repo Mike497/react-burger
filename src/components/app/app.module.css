@@ -1,6 +1,8 @@
-.appContainer {
-  max-width: 100%;
+.mainContent {
+  max-width: 1240px;
+  width: 100%;
   margin: 0 auto;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
@@ -9,6 +11,6 @@
   display: flex;
   gap: 40px;
   width: 100%;
-  overflow: hidden;
   flex-grow: 1;
+  overflow: hidden;
 }

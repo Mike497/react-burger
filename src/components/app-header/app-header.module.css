@@ -1,12 +1,22 @@
 .appHeader {
+  padding: 16px 0;
+}
+
+.headerWrapper {
+  max-width: 1240px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: max-content 1fr max-content;
   align-items: center;
-  flex-shrink: 0;
+}
+
+.headerWrapper > a {
+  justify-self: center;
 }
 
 .headerGroup {
   display: flex;
+  gap: 8px;
 }
 
 .profileGroup {
@@ -15,4 +25,35 @@
 
 .navBtn {
   display: inline-flex;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: var(--inactive-text-color);
+  transition: color 0.2s;
+  border-radius: 40px;
+}
+
+.link:hover span {
+  color: var(--text-color);
+}
+
+.link:hover svg {
+  fill: var(--text-color);
+}
+
+.link:hover {
+  color: var(--text-color);
+}
+
+.linkActive {
+  color: var(--text-color);
+}
+
+.linkActive svg {
+  fill: var(--text-color);
 }

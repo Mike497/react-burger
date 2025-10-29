@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import BurgerConstructorItem from './burger-constructor-item.js';
 import OrderTotal from './order-total.js';
@@ -9,9 +10,11 @@ import { createOrder } from '../../services/orderSlice';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { bun, fillings } = useSelector(state => state.burgerConstructor);
   const { isLoading } = useSelector(state => state.order);
+  const { user } = useSelector(state => state.auth);
 
   const [{ isOver }, dropTargetRef] = useDrop({
     accept: 'ingredient',
@@ -34,6 +37,11 @@ const BurgerConstructor = () => {
   }, [bun, fillings]);
 
   const handleOrderClick = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
     if (!bun) {
       alert("Добавьте булку!");
       return;
