@@ -1,23 +1,19 @@
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './form.module.css';
 import { register } from '../services/authSlice';
+import { useForm } from '../hooks/useForm';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-
-  const onChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const { values, handleChange } = useForm({ name: '', email: '', password: '' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await dispatch(register(form));
+      const res = await dispatch(register(values));
       if (res.success) {
         navigate('/');
       }
@@ -34,22 +30,22 @@ const RegisterPage = () => {
         <Input
           type={'text'}
           placeholder={'Имя'}
-          onChange={onChange}
-          value={form.name}
+          onChange={handleChange}
+          value={values.name}
           name={'name'}
           size={'default'}
           extraClass="mb-6"
         />
         <EmailInput
-          onChange={onChange}
-          value={form.email}
+          onChange={handleChange}
+          value={values.email}
           name={'email'}
           isIcon={false}
           extraClass="mb-6"
         />
         <PasswordInput
-          onChange={onChange}
-          value={form.password}
+          onChange={handleChange}
+          value={values.password}
           name={'password'}
           extraClass="mb-6"
         />

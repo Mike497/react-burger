@@ -4,28 +4,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './form.module.css';
 import { logout, updateUser } from '../services/authSlice';
+import { useForm } from '../hooks/useForm';
 
 export const ProfileForm = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.auth);
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const { values, handleChange, setValues } = useForm({ name: '', email: '', password: '' });
   const [isFormUpdated, setFormUpdated] = useState(false);
 
   useEffect(() => {
     if (user) {
-      setForm({ name: user.name, email: user.email, password: '' });
+      setValues({ name: user.name, email: user.email, password: '' });
     }
-  }, [user]);
+  }, [user, setValues]);
 
   const onChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    handleChange(e);
     setFormUpdated(true);
   };
   
   const handleCancel = (e) => {
     e.preventDefault();
     if (user) {
-      setForm({ name: user.name, email: user.email, password: '' });
+      setValues({ name: user.name, email: user.email, password: '' });
     }
     setFormUpdated(false);
   };
@@ -34,9 +35,9 @@ export const ProfileForm = () => {
     e.preventDefault();
 
     const dataToUpdate = {};
-    if (form.name !== user.name) dataToUpdate.name = form.name;
-    if (form.email !== user.email) dataToUpdate.email = form.email;
-    if (form.password) dataToUpdate.password = form.password;
+    if (values.name !== user.name) dataToUpdate.name = values.name;
+    if (values.email !== user.email) dataToUpdate.email = values.email;
+    if (values.password) dataToUpdate.password = values.password;
 
     if (Object.keys(dataToUpdate).length > 0) {
       dispatch(updateUser(dataToUpdate))
@@ -54,7 +55,7 @@ export const ProfileForm = () => {
         type={'text'}
         placeholder={'Имя'}
         onChange={onChange}
-        value={form.name}
+        value={values.name}
         name={'name'}
         icon={'EditIcon'}
         extraClass="mb-6"
@@ -63,14 +64,14 @@ export const ProfileForm = () => {
         type={'email'}
         placeholder={'Логин'}
         onChange={onChange}
-        value={form.email}
+        value={values.email}
         name={'email'}
         icon={'EditIcon'}
         extraClass="mb-6"
       />
       <PasswordInput
         onChange={onChange}
-        value={form.password}
+        value={values.password}
         name={'password'}
         icon="EditIcon"
         extraClass="mb-6"
@@ -109,7 +110,6 @@ const ProfilePage = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout())
-      .unwrap()
       .then(() => navigate('/login', { replace: true }))
       .catch(err => console.error('Logout failed:', err));
   };

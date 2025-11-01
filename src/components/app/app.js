@@ -28,7 +28,7 @@ const App = () => {
   const background = location.state && location.state.background;
 
   const { items, isLoading, hasError } = useSelector(state => state.ingredients);
-  const orderNumber = useSelector(state => state.order.orderNumber);
+  const { orderNumber, isLoading: isOrderLoading } = useSelector(state => state.order);
 
   React.useEffect(() => {
     if (getCookie('token')) {
@@ -82,7 +82,7 @@ const App = () => {
         </Routes>
       </main>
 
-      {orderNumber && (
+      {(isOrderLoading || orderNumber) && (
         <Modal onClose={handleCloseOrderModal}>
           <OrderDetails />
         </Modal>

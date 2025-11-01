@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { resetPasswordRequest } from '../utils/burgers-api';
 import styles from './form.module.css';
+import { useForm } from '../hooks/useForm';
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [form, setForm] = useState({ password: '', token: '' });
+  const { values, handleChange } = useForm({ password: '', token: '' });
 
   useEffect(() => {
     if (!location.state?.fromForgotPassword) {
@@ -15,14 +16,10 @@ const ResetPasswordPage = () => {
     }
   }, [location, navigate]);
 
-  const onChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await resetPasswordRequest(form);
+      const res = await resetPasswordRequest(values);
       if (res.success) {
         navigate('/login');
       } else {
@@ -38,8 +35,8 @@ const ResetPasswordPage = () => {
       <h2 className="text text_type_main-medium  mb-6">Восстановление пароля</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
         <PasswordInput
-          onChange={onChange}
-          value={form.password}
+          onChange={handleChange}
+          value={values.password}
           name={'password'}
           placeholder={'Введите новый пароль'}
           extraClass="mb-6"
@@ -47,8 +44,8 @@ const ResetPasswordPage = () => {
         <Input
           type={'text'}
           placeholder={'Введите код из письма'}
-          onChange={onChange}
-          value={form.token}
+          onChange={handleChange}
+          value={values.token}
           name={'token'}
           size={'default'}
           extraClass="mb-6"
