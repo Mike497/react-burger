@@ -1,21 +1,27 @@
-import React from 'react';
-
+import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styles from './app-header.module.css';
 
-import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-
-const AppHeaderButton = ({ children, title }) => {
+const AppHeaderButton = ({ children, title, to, end = false }) => {
   return (
-    <Button
-      extraClass={styles.navBtn + ' mt-4 mb-4 pl-5 pr-5'}
-      htmlType="button"
-      type="secondary"
-      size="large"
+    <NavLink
+      to={to}
+      end={end}
+      className={({ isActive }) => 
+        `${styles.link} text text_type_main-default ${isActive ? styles.linkActive : ''}`
+      }
     >
-      <span className="mr-2">{children}</span>
+      {children}
       <span>{title}</span>
-    </Button>
+    </NavLink>
   );
+};
+
+AppHeaderButton.propTypes = {
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
+  end: PropTypes.bool
 };
 
 export default AppHeaderButton;

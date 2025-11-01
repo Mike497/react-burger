@@ -1,11 +1,16 @@
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styles from './modals.module.css';
 
 const IngredientDetails = () => {
-  const ingredient = useSelector(state => state.details.selectedIngredient);
+  const { id } = useParams();
+  const { items } = useSelector(state => state.ingredients);
+  const ingredientFromUrl = items.find(item => item._id === id);
+  const ingredientFromState = useSelector(state => state.details.selectedIngredient);
+  const ingredient = ingredientFromUrl || ingredientFromState;
 
   if (!ingredient) {
-    return null;
+    return <p className="text text_type_main-large">Ингредиент не найден...</p>;
   }
 
   return (
