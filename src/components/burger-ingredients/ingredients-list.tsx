@@ -1,9 +1,15 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 import IngredientCard from './ingredient-card';
-import { ingredientPropType } from '../../utils/types.js';
+import { TIngredient } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
 
-const IngredientsList = ({ items, title, innerRef }) => {
+type TIngredientsListProps = {
+  items: TIngredient[];
+  title: string;
+  innerRef: React.Ref<HTMLParagraphElement>;
+};
+
+const IngredientsList: React.FC<TIngredientsListProps> = ({ items, title, innerRef }) => {
   return (
     <>
       <p className="text text_type_main-medium pt-10" ref={innerRef}>
@@ -16,15 +22,6 @@ const IngredientsList = ({ items, title, innerRef }) => {
       </div>
     </>
   );
-};
-
-IngredientsList.propTypes = {
-  items: PropTypes.arrayOf(ingredientPropType).isRequired,
-  title: PropTypes.string.isRequired,
-  innerRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
-  ])
 };
 
 export default IngredientsList;

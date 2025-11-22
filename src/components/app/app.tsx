@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -19,16 +18,17 @@ import ResetPasswordPage from '../../pages/reset';
 import ProfilePage, { ProfileForm, OrdersHistory } from '../../pages/profile';
 import IngredientPage from '../../pages/ingredient-page';
 import ProtectedRouteElement from '../protected-route/protected-route';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
-const App = () => {
-  const dispatch = useDispatch();
+const App: React.FC = () => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
   const background = location.state && location.state.background;
 
-  const { items, isLoading, hasError } = useSelector(state => state.ingredients);
-  const { orderNumber, isLoading: isOrderLoading } = useSelector(state => state.order);
+  const { items, isLoading, hasError } = useAppSelector(state => state.ingredients);
+  const { orderNumber, isLoading: isOrderLoading } = useAppSelector(state => state.order);
 
   React.useEffect(() => {
     if (getCookie('token')) {
@@ -47,7 +47,7 @@ const App = () => {
     dispatch(clearOrder());
   };
 
-  const MainPage = () => (
+  const MainPage: React.FC = () => (
     <>
       {hasError && <p>Произошла ошибка при загрузке данных!</p>}
       {isLoading && <p>Загрузка ингредиентов...</p>}
@@ -67,14 +67,10 @@ const App = () => {
         <Routes location={background || location}>
           <Route path="/" element={<MainPage />} />
           <Route path="/ingredients/:id" element={<IngredientPage />} />
-
-          {/* Unauthorized routes */}
           <Route path="/login" element={<ProtectedRouteElement unAuthRoute={true} element={<LoginPage />} />} />
           <Route path="/register" element={<ProtectedRouteElement unAuthRoute={true} element={<RegisterPage />} />} />
           <Route path="/forgot-password" element={<ProtectedRouteElement unAuthRoute={true} element={<ForgotPasswordPage />} />} />
           <Route path="/reset-password" element={<ProtectedRouteElement unAuthRoute={true} element={<ResetPasswordPage />} />} />
-
-          {/* Authorized routes */}
           <Route path="/profile" element={<ProtectedRouteElement element={<ProfilePage />} />}>
             <Route index element={<ProfileForm />} />
             <Route path="orders" element={<OrdersHistory />} />

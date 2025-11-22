@@ -1,12 +1,12 @@
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styles from './modals.module.css';
+import { useAppSelector } from '../../services/hooks';
 
-const IngredientDetails = () => {
-  const { id } = useParams();
-  const { items } = useSelector(state => state.ingredients);
+const IngredientDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const { items } = useAppSelector(state => state.ingredients);
   const ingredientFromUrl = items.find(item => item._id === id);
-  const ingredientFromState = useSelector(state => state.details.selectedIngredient);
+  const ingredientFromState = useAppSelector(state => state.details.selectedIngredient);
   const ingredient = ingredientFromUrl || ingredientFromState;
 
   if (!ingredient) {

@@ -1,8 +1,14 @@
 import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styles from './app-header.module.css';
 
-const AppHeaderButton = ({ children, title, to, end = false }) => {
+type TAppHeaderButtonProps = {
+  children: React.ReactNode;
+  title: string;
+  to: string;
+  end?: boolean;
+};
+
+const AppHeaderButton: React.FC<TAppHeaderButtonProps> = ({ children, title, to, end = false }) => {
   return (
     <NavLink
       to={to}
@@ -15,13 +21,6 @@ const AppHeaderButton = ({ children, title, to, end = false }) => {
       <span>{title}</span>
     </NavLink>
   );
-};
-
-AppHeaderButton.propTypes = {
-  children: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
-  end: PropTypes.bool
 };
 
 export default AppHeaderButton;

@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { resetPasswordRequest } from '../utils/burgers-api';
 import styles from './form.module.css';
 import { useForm } from '../hooks/useForm';
 
-const ResetPasswordPage = () => {
+const ResetPasswordPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { values, handleChange } = useForm({ password: '', token: '' });
@@ -16,7 +16,7 @@ const ResetPasswordPage = () => {
     }
   }, [location, navigate]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const res = await resetPasswordRequest(values);
@@ -41,6 +41,7 @@ const ResetPasswordPage = () => {
           placeholder={'Введите новый пароль'}
           extraClass="mb-6"
         />
+        {/*@ts-ignore*/}
         <Input
           type={'text'}
           placeholder={'Введите код из письма'}

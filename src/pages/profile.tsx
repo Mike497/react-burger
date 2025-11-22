@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent, ChangeEvent, SyntheticEvent } from 'react';
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './form.module.css';
 import { logout, updateUser } from '../services/authSlice';
 import { useForm } from '../hooks/useForm';
+import { useAppDispatch, useAppSelector } from '../services/hooks';
 
-export const ProfileForm = () => {
-  const dispatch = useDispatch();
-  const { user } = useSelector(state => state.auth);
+export const ProfileForm: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector(state => state.auth);
   const { values, handleChange, setValues } = useForm({ name: '', email: '', password: '' });
   const [isFormUpdated, setFormUpdated] = useState(false);
 
@@ -18,12 +18,12 @@ export const ProfileForm = () => {
     }
   }, [user, setValues]);
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     handleChange(e);
     setFormUpdated(true);
   };
   
-  const handleCancel = (e) => {
+  const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     if (user) {
       setValues({ name: user.name, email: user.email, password: '' });
@@ -31,10 +31,11 @@ export const ProfileForm = () => {
     setFormUpdated(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) return;
 
-    const dataToUpdate = {};
+    const dataToUpdate: {name?: string, email?: string, password?: string} = {};
     if (values.name !== user.name) dataToUpdate.name = values.name;
     if (values.email !== user.email) dataToUpdate.email = values.email;
     if (values.password) dataToUpdate.password = values.password;
@@ -51,6 +52,7 @@ export const ProfileForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      {/*@ts-ignore*/}
       <Input
         type={'text'}
         placeholder={'Имя'}
@@ -60,6 +62,7 @@ export const ProfileForm = () => {
         icon={'EditIcon'}
         extraClass="mb-6"
       />
+      {/*@ts-ignore*/}
       <Input
         type={'email'}
         placeholder={'Логин'}
@@ -91,7 +94,7 @@ export const ProfileForm = () => {
   );
 };
 
-export const OrdersHistory = () => {
+export const OrdersHistory: React.FC = () => {
   return (
     <div style={{width: '480px'}}>
       <p className="text text_type_main-medium">Здесь будет история заказов</p>
@@ -99,15 +102,15 @@ export const OrdersHistory = () => {
   );
 };
 
-const ProfilePage = () => {
-  const dispatch = useDispatch();
+const ProfilePage: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const getLinkClass = ({ isActive }) => {
+  const getLinkClass = ({ isActive }: { isActive: boolean }) => {
     return isActive ? `${styles.profileLink} ${styles.profileLinkActive}` : styles.profileLink;
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(logout())
       .then(() => navigate('/login', { replace: true }))
@@ -124,7 +127,6 @@ const ProfilePage = () => {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </nav>
-
       <main className={styles.profileContent}>
         <Outlet />
       </main>

@@ -1,14 +1,15 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { forgotPasswordRequest } from '../utils/burgers-api';
 import styles from './form.module.css';
 import { useForm } from '../hooks/useForm';
 
-const ForgotPasswordPage = () => {
+const ForgotPasswordPage: React.FC = () => {
   const navigate = useNavigate();
   const { values, handleChange } = useForm({ email: '' });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const res = await forgotPasswordRequest(values.email);

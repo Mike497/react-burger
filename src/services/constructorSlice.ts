@@ -1,11 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TIngredient, TConstructorIngredient } from '../utils/types';
 
-const initialState = {
+type TConstructorState = {
+    fillings: TConstructorIngredient[];
+    bun: TIngredient | null;
+}
+
+const initialState: TConstructorState = {
   fillings: [],
   bun: null
 };
 
-const uniqueId = () => {
+const uniqueId = (): string => {
   return `${Date.now()}-${Math.floor(Math.random() * 1e9)}`;
 }
 
@@ -14,27 +20,27 @@ const constructorSlice = createSlice({
   initialState,
   reducers: {
     addIngredient: {
-      reducer: (state, action) => {
+      reducer: (state, action: PayloadAction<TConstructorIngredient | TIngredient>) => {
         const ingredient = action.payload;
         if (ingredient.type === 'bun') {
-          state.bun = ingredient;
+          state.bun = ingredient as TIngredient;
         } else {
-          state.fillings.push(ingredient);
+          state.fillings.push(ingredient as TConstructorIngredient);
         }
       },
-      prepare: (ingredient) => {
+      prepare: (ingredient: TIngredient) => {
         if (ingredient.type !== 'bun') {
             return { payload: { ...ingredient, uniqueId: uniqueId() } };
         }
         return { payload: ingredient };
       }
     },
-    removeIngredient: (state, action) => {
+    removeIngredient: (state, action: PayloadAction<string>) => {
       state.fillings = state.fillings.filter(
         (item) => item.uniqueId !== action.payload
       );
     },
-    reorderIngredients: (state, action) => {
+    reorderIngredients: (state, action: PayloadAction<{ dragIndex: number; hoverIndex: number }>) => {
       const { dragIndex, hoverIndex } = action.payload;
       const draggedItem = state.fillings[dragIndex];
 
