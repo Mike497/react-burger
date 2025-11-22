@@ -1,11 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-
-import AppHeaderButton from './app-header-button.js';
+import AppHeaderButton from './app-header-button';
 import styles from './app-header.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const AppHeader = () => {
+const AppHeader: React.FC = () => {
   return (
     <header className={styles.appHeader}>
       <div className={styles.headerWrapper}>
@@ -17,11 +16,9 @@ const AppHeader = () => {
             <ListIcon type="secondary" />
           </AppHeaderButton>
         </div>
-
         <NavLink to="/">
           <Logo />
         </NavLink>
-
         <div className={`${styles.headerGroup} ${styles.profileGroup}`}>
           <AppHeaderButton title="Личный кабинет" to="/profile" end>
             <ProfileIcon type="secondary" />

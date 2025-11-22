@@ -1,16 +1,17 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './form.module.css';
 import { register } from '../services/authSlice';
 import { useForm } from '../hooks/useForm';
+import { useAppDispatch } from '../services/hooks';
 
-const RegisterPage = () => {
+const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { values, handleChange } = useForm({ name: '', email: '', password: '' });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const res = await dispatch(register(values));
@@ -27,6 +28,7 @@ const RegisterPage = () => {
     <div className={styles.container}>
       <h2 className="text text_type_main-medium  mb-6">Регистрация</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
+        {/*@ts-ignore*/}
         <Input
           type={'text'}
           placeholder={'Имя'}

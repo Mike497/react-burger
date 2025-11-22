@@ -1,36 +1,38 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useMemo, Ref } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
-import BurgerConstructorItem from './burger-constructor-item.js';
-import OrderTotal from './order-total.js';
+import BurgerConstructorItem from './burger-constructor-item';
+import OrderTotal from './order-total';
 import styles from './burger-constructor.module.css';
 import { addIngredient, removeIngredient } from '../../services/constructorSlice';
 import { createOrder } from '../../services/orderSlice';
+import { TIngredient } from '../../utils/types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
-const BurgerConstructor = () => {
-  const dispatch = useDispatch();
+const BurgerConstructor: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { bun, fillings } = useSelector(state => state.burgerConstructor);
-  const { isLoading } = useSelector(state => state.order);
-  const { user } = useSelector(state => state.auth);
+  const { bun, fillings } = useAppSelector(state => state.burgerConstructor);
+  const { isLoading } = useAppSelector(state => state.order);
+  const { user } = useAppSelector(state => state.auth);
 
-  const [{ isOver }, dropTargetRef] = useDrop({
-    accept: 'ingredient',
-    drop(item) {
-      dispatch(addIngredient(item));
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver()
-    })
-  });
+  const [{ isOver }, drop] = useDrop<TIngredient, void, { isOver: boolean }>(() => ({
+      accept: 'ingredient',
+      drop: (item) => {
+        dispatch(addIngredient(item));
+      },
+      collect: (monitor) => ({
+        isOver: monitor.isOver()
+      }),
+  }), [dispatch]);
 
-  const handleRemoveIngredient = (uniqueId) => {
+
+  const handleRemoveIngredient = (uniqueId: string) => {
     dispatch(removeIngredient(uniqueId));
   };
 
-  const totalPrice = React.useMemo(() => {
+  const totalPrice = useMemo(() => {
     const fillingsPrice = fillings.reduce((s, i) => s + i.price, 0);
     const bunPrice = bun ? bun.price * 2 : 0;
     return bunPrice + fillingsPrice;
@@ -41,18 +43,15 @@ const BurgerConstructor = () => {
       navigate('/login');
       return;
     }
-
     if (!bun) {
       alert("Добавьте булку!");
       return;
     }
-
     const ingredientIds = [
       bun._id,
       ...fillings.map(item => item._id),
       bun._id
     ];
-
     dispatch(createOrder(ingredientIds));
   };
 
@@ -62,16 +61,18 @@ const BurgerConstructor = () => {
 
   return (
     <aside
-      ref={dropTargetRef}
+      ref={drop as unknown as Ref<HTMLElement>}
       className={`${styles.constructorPanel} pt-25`}
       style={constructorStyle}
+      data-testid="constructor-drop-area"
     >
       {bun && (
         <div className="pl-8 pr-4">
           <BurgerConstructorItem
             type="top"
             isLocked={true}
-            item={bun} 
+            item={bun}
+            index={-1} 
           />
         </div>
       )}
@@ -93,6 +94,7 @@ const BurgerConstructor = () => {
             type="bottom"
             isLocked={true}
             item={bun}
+            index={-1}
           />
         </div>
       )}
