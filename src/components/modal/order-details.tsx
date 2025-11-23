@@ -1,10 +1,11 @@
-import { useSelector } from 'react-redux';
 import styles from './modals.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Loader from '../loader/loader';
+import { useAppSelector } from '../../services/hooks';
+import React from 'react';
 
-const OrderDetails = () => {
-  const { orderNumber, isLoading, hasError } = useSelector(state => state.order);
+const OrderDetails: React.FC = () => {
+  const { orderNumber, isLoading, hasError } = useAppSelector(state => state.order);
 
   return (
     <div className={`${styles.orderDetailsContainer}`}>

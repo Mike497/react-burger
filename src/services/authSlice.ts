@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setCookie, getCookie, deleteCookie } from '../utils/cookies';
 import {
   registerRequest,
@@ -7,8 +7,17 @@ import {
   getUserRequest,
   updateUserRequest,
 } from '../utils/burgers-api';
+import { TUser } from '../utils/types';
+import { AppDispatch } from './store';
 
-const initialState = {
+type TAuthState = {
+    user: TUser | null;
+    isLoading: boolean;
+    hasError: boolean;
+    isAuthChecked: boolean;
+}
+
+const initialState: TAuthState = {
   user: null,
   isLoading: false,
   hasError: false,
@@ -23,7 +32,7 @@ const authSlice = createSlice({
       state.isLoading = true;
       state.hasError = false;
     },
-    authSuccess: (state, action) => {
+    authSuccess: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload;
       state.isLoading = false;
       state.isAuthChecked = true;
@@ -37,7 +46,7 @@ const authSlice = createSlice({
     clearUser: (state) => {
       state.user = null;
     },
-    setAuthChecked: (state, action) => {
+    setAuthChecked: (state, action: PayloadAction<boolean>) => {
         state.isAuthChecked = action.payload;
     }
   },
@@ -45,7 +54,10 @@ const authSlice = createSlice({
 
 export const { authRequest, authSuccess, authFailed, clearUser, setAuthChecked } = authSlice.actions;
 
-export const register = (form) => async (dispatch) => {
+type TRegisterData = { email: string; password?: string; name: string };
+type TLoginData = Omit<TRegisterData, 'name'>;
+
+export const register = (form: TRegisterData) => async (dispatch: AppDispatch) => {
   dispatch(authRequest());
   try {
     const res = await registerRequest(form);
@@ -64,7 +76,7 @@ export const register = (form) => async (dispatch) => {
   }
 };
 
-export const login = (form) => async (dispatch) => {
+export const login = (form: TLoginData) => async (dispatch: AppDispatch) => {
   dispatch(authRequest());
   try {
     const res = await loginRequest(form);
@@ -83,7 +95,7 @@ export const login = (form) => async (dispatch) => {
   }
 };
 
-export const logout = () => async (dispatch) => {
+export const logout = () => async (dispatch: AppDispatch) => {
   dispatch(authRequest());
   try {
     const refreshToken = getCookie('refreshToken');
@@ -98,7 +110,7 @@ export const logout = () => async (dispatch) => {
   }
 };
 
-export const getUser = () => async (dispatch) => {
+export const getUser = () => async (dispatch: AppDispatch) => {
     dispatch(authRequest());
     try {
         const res = await getUserRequest();
@@ -116,7 +128,7 @@ export const getUser = () => async (dispatch) => {
     }
 }
 
-export const updateUser = (form) => async (dispatch) => {
+export const updateUser = (form: Partial<TRegisterData>) => async (dispatch: AppDispatch) => {
     dispatch(authRequest());
     try {
         const res = await updateUserRequest(form);

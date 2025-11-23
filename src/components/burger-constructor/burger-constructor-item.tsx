@@ -1,69 +1,76 @@
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import React, { useRef } from 'react';
+import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { reorderIngredients } from '../../services/constructorSlice';
-import { ingredientPropType } from '../../utils/types.js';
+import { TIngredient, TConstructorIngredient } from '../../utils/types';
+import { useAppDispatch } from '../../services/hooks';
 
-const BurgerConstructorItem = ({ item, index, handleClose, type, isLocked }) => {
-  const dispatch = useDispatch();
-  const ref = useRef(null);
+type TBurgerConstructorItemProps = {
+  item: TIngredient | TConstructorIngredient;
+  index: number;
+  handleClose?: () => void;
+  type?: "top" | "bottom";
+  isLocked?: boolean;
+};
 
-  const [{ handlerId }, dropRef] = useDrop({
+type TDragItem = {
+  id: string;
+  index: number;
+};
+
+const BurgerConstructorItem: React.FC<TBurgerConstructorItemProps> = ({ item, index, handleClose, type, isLocked }) => {
+  const dispatch = useAppDispatch();
+  const ref = useRef<HTMLDivElement>(null); 
+
+  const [{ handlerId }, drop] = useDrop<TDragItem, void, { handlerId: any }>({
     accept: 'constructorItem',
     collect(monitor) {
       return { handlerId: monitor.getHandlerId() };
     },
     hover(draggedItem, monitor) {
       if (!ref.current) return;
-
       const dragIndex = draggedItem.index;
       const hoverIndex = index;
       if (dragIndex === hoverIndex) return;
-
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
-
       dispatch(reorderIngredients({ dragIndex, hoverIndex }));
-
       draggedItem.index = hoverIndex;
     }
   });
 
-  const [{ isDragging }, dragRef] = useDrag({
+  const [{ isDragging }, drag] = useDrag({
     type: 'constructorItem',
-    item: () => ({ id: item.uniqueId, index }),
+    item: () => ({ id: (item as TConstructorIngredient).uniqueId, index }),
+    canDrag: () => !isLocked,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  if (type !== 'top' && type !== 'bottom') {
-    dragRef(dropRef(ref));
-  }
-  
   const opacity = isDragging ? 0 : 1;
 
+  if (!isLocked) {
+    drag(drop(ref));
+  } else {
+    drop(ref);
+  }
+
   return (
-    <article
+    <div
       ref={ref}
       className={styles.constructorItems}
       style={{ opacity }}
       data-handler-id={handlerId}
     >
       <div className={`${styles.dragItemSpacer} mr-2`}>
-        {type !== 'top' && type !== 'bottom' ? (
-          <DragIcon type="primary" />
-        ) : null}
+        {!isLocked ? <DragIcon type="primary" /> : null}
       </div>
-
       <ConstructorElement
         type={type}
         isLocked={isLocked}
@@ -72,15 +79,8 @@ const BurgerConstructorItem = ({ item, index, handleClose, type, isLocked }) => 
         thumbnail={item.image}
         handleClose={handleClose}
       />
-    </article>
+    </div>
   );
-};
-
-BurgerConstructorItem.propTypes = {
-  type: PropTypes.string,
-  isLocked: PropTypes.bool,
-  item:ingredientPropType.isRequired,
-  handleClose: PropTypes.func
 };
 
 export default BurgerConstructorItem;
