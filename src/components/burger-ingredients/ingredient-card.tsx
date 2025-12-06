@@ -25,7 +25,7 @@ const IngredientCard: React.FC<TIngredientCardProps> = ({ item }) => {
 
   const count = React.useMemo(() => {
     if (item.type !== 'bun') {
-      return fillings.filter(filling => filling._id === item._id).length;
+      return fillings.filter((filling: TIngredient) => filling._id === item._id).length;
     }
     return bun?._id === item._id ? 2 : 0;
   }, [item, fillings, bun]);

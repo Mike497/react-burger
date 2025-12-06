@@ -32,3 +32,14 @@ export type TRegisterForm = {
 export type TLoginForm = Omit<TRegisterForm, 'name'>;
 
 export type TUpdateUserForm = Partial<TRegisterForm>;
+
+export type TOrderStatus = 'created' | 'pending' | 'done';
+
+export type TOrder = {
+  _id: string;
+  ingredients: string[];
+  status: TOrderStatus;
+  name: string;
+  createdAt: string;
+  number: number;
+};

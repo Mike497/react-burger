@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
+import { Identifier } from 'dnd-core';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { reorderIngredients } from '../../services/constructorSlice';
@@ -23,7 +24,7 @@ const BurgerConstructorItem: React.FC<TBurgerConstructorItemProps> = ({ item, in
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLDivElement>(null); 
 
-  const [{ handlerId }, drop] = useDrop<TDragItem, void, { handlerId: any }>({
+  const [{ handlerId }, drop] = useDrop<TDragItem, void, { handlerId: Identifier | null }>({
     accept: 'constructorItem',
     collect(monitor) {
       return { handlerId: monitor.getHandlerId() };

@@ -9,7 +9,7 @@ const initialState: TDetailsState = {
   selectedIngredient: null,
 };
 
-const detailsSlice = createSlice({
+export const detailsSlice = createSlice({
   name: 'details',
   initialState,
   reducers: {

@@ -1,11 +1,12 @@
 import { useParams } from 'react-router-dom';
 import styles from './modals.module.css';
 import { useAppSelector } from '../../services/hooks';
+import { TIngredient } from '../../utils/types';
 
 const IngredientDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { items } = useAppSelector(state => state.ingredients);
-  const ingredientFromUrl = items.find(item => item._id === id);
+  const ingredientFromUrl = items.find((item: TIngredient) => item._id === id);
   const ingredientFromState = useAppSelector(state => state.details.selectedIngredient);
   const ingredient = ingredientFromUrl || ingredientFromState;
 

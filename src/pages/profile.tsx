@@ -5,6 +5,10 @@ import styles from './form.module.css';
 import { logout, updateUser } from '../services/authSlice';
 import { useForm } from '../hooks/useForm';
 import { useAppDispatch, useAppSelector } from '../services/hooks';
+import OrderCard from '../components/order-feed/order-card';
+import { userWsConnect, userWsDisconnect } from '../services/userFeedSlice';
+import { getCookie } from '../utils/cookies';
+import feedStyles from '../pages/feed.module.css';
 
 export const ProfileForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -94,10 +98,34 @@ export const ProfileForm: React.FC = () => {
   );
 };
 
+const USER_FEED_WEBSOCKET_URL = 'wss://norma.education-services.ru/orders';
+
 export const OrdersHistory: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { orders, status } = useAppSelector(state => state.userFeed);
+
+  useEffect(() => {
+    const token = getCookie('token');
+    dispatch(userWsConnect(`${USER_FEED_WEBSOCKET_URL}?token=${token}`));
+
+    return () => {
+      dispatch(userWsDisconnect());
+    };
+  }, [dispatch]);
+
+  if (status === 'connecting' && !orders.length) {
+      return <p className="text text_type_main-medium">Загрузка истории заказов...</p>;
+  }
+
+  if (!orders.length) {
+      return <p className="text text_type_main-medium">У вас пока нет заказов</p>;
+  }
+
   return (
-    <div style={{width: '480px'}}>
-      <p className="text text_type_main-medium">Здесь будет история заказов</p>
+    <div className={`${feedStyles.ordersColumn} custom-scroll`}>
+      {[...orders].reverse().map(order => (
+        <OrderCard key={order._id} order={order} basePath="/profile/orders" />
+      ))}
     </div>
   );
 };
