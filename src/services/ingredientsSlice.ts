@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { loadIngredients } from '../utils/burgers-api';
 import { TIngredient } from '../utils/types';
-import { AppDispatch } from './store';
+import { AppThunk } from './store';
 
 type TIngredientsState = {
   isLoading: boolean;
@@ -15,7 +15,7 @@ const initialState: TIngredientsState = {
   items: []
 };
 
-const ingredientsSlice = createSlice({
+export const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {
@@ -35,7 +35,7 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export const getIngredients = () => async (dispatch: AppDispatch) => {
+export const getIngredients = (): AppThunk => async (dispatch) => {
   dispatch(ingredientsRequest());
   try {
     const response = await loadIngredients();

@@ -12,7 +12,7 @@ const AppHeader: React.FC = () => {
           <AppHeaderButton title="Конструктор" to="/" end>
             <BurgerIcon type="secondary" />
           </AppHeaderButton>
-          <AppHeaderButton title="Лента заказов" to="/profile/orders">
+          <AppHeaderButton title="Лента заказов" to="/feed">
             <ListIcon type="secondary" />
           </AppHeaderButton>
         </div>

@@ -6,7 +6,7 @@ import OrderTotal from './order-total';
 import styles from './burger-constructor.module.css';
 import { addIngredient, removeIngredient } from '../../services/constructorSlice';
 import { createOrder } from '../../services/orderSlice';
-import { TIngredient } from '../../utils/types';
+import { TIngredient, TConstructorIngredient } from '../../utils/types';
 import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
 const BurgerConstructor: React.FC = () => {
@@ -33,7 +33,7 @@ const BurgerConstructor: React.FC = () => {
   };
 
   const totalPrice = useMemo(() => {
-    const fillingsPrice = fillings.reduce((s, i) => s + i.price, 0);
+    const fillingsPrice = fillings.reduce((s: number, i: TConstructorIngredient) => s + i.price, 0);
     const bunPrice = bun ? bun.price * 2 : 0;
     return bunPrice + fillingsPrice;
   }, [bun, fillings]);
@@ -49,7 +49,7 @@ const BurgerConstructor: React.FC = () => {
     }
     const ingredientIds = [
       bun._id,
-      ...fillings.map(item => item._id),
+      ...fillings.map((item: TConstructorIngredient) => item._id),
       bun._id
     ];
     dispatch(createOrder(ingredientIds));
@@ -78,7 +78,7 @@ const BurgerConstructor: React.FC = () => {
       )}
 
       <div className={styles.fillingsScrollArea}>
-        {fillings.map((ingredient, index) => (
+        {fillings.map((ingredient: TConstructorIngredient, index: number) => (
           <BurgerConstructorItem
             key={ingredient.uniqueId}
             index={index}

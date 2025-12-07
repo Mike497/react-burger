@@ -3,6 +3,7 @@ import IngredientsList from './ingredients-list';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useAppSelector } from '../../services/hooks';
+import { TIngredient } from '../../utils/types';
 
 const BurgerIngredients: React.FC = () => {
   const [currentTab, setCurrentTab] = useState('bun');
@@ -34,9 +35,9 @@ const BurgerIngredients: React.FC = () => {
     }
   };
 
-  const buns = React.useMemo(() => items.filter((item) => item.type === 'bun'), [items]);
-  const sauces = React.useMemo(() => items.filter((item) => item.type === 'sauce'), [items]);
-  const mains = React.useMemo(() => items.filter((item) => item.type === 'main'), [items]);
+  const buns = React.useMemo(() => items.filter((item: TIngredient) => item.type === 'bun'), [items]);
+  const sauces = React.useMemo(() => items.filter((item: TIngredient) => item.type === 'sauce'), [items]);
+  const mains = React.useMemo(() => items.filter((item: TIngredient) => item.type === 'main'), [items]);
 
   const onTabClick = (tab: string) => {
     setCurrentTab(tab);

@@ -6,9 +6,12 @@ import {
   logoutRequest,
   getUserRequest,
   updateUserRequest,
+  TAuthResponse,
+  TServerMessageResponse,
+  TUserResponse,
 } from '../utils/burgers-api';
 import { TUser } from '../utils/types';
-import { AppDispatch } from './store';
+import { AppThunk } from './store';
 
 type TAuthState = {
     user: TUser | null;
@@ -24,7 +27,7 @@ const initialState: TAuthState = {
   isAuthChecked: false
 };
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -57,7 +60,7 @@ export const { authRequest, authSuccess, authFailed, clearUser, setAuthChecked }
 type TRegisterData = { email: string; password?: string; name: string };
 type TLoginData = Omit<TRegisterData, 'name'>;
 
-export const register = (form: TRegisterData) => async (dispatch: AppDispatch) => {
+export const register = (form: TRegisterData): AppThunk<Promise<TAuthResponse>> => async (dispatch) => {
   dispatch(authRequest());
   try {
     const res = await registerRequest(form);
@@ -76,7 +79,7 @@ export const register = (form: TRegisterData) => async (dispatch: AppDispatch) =
   }
 };
 
-export const login = (form: TLoginData) => async (dispatch: AppDispatch) => {
+export const login = (form: TLoginData): AppThunk<Promise<TAuthResponse>> => async (dispatch) => {
   dispatch(authRequest());
   try {
     const res = await loginRequest(form);
@@ -95,7 +98,7 @@ export const login = (form: TLoginData) => async (dispatch: AppDispatch) => {
   }
 };
 
-export const logout = () => async (dispatch: AppDispatch) => {
+export const logout = (): AppThunk<Promise<TServerMessageResponse>> => async (dispatch) => {
   dispatch(authRequest());
   try {
     const refreshToken = getCookie('refreshToken');
@@ -110,7 +113,7 @@ export const logout = () => async (dispatch: AppDispatch) => {
   }
 };
 
-export const getUser = () => async (dispatch: AppDispatch) => {
+export const getUser = (): AppThunk<Promise<TUserResponse>> => async (dispatch) => {
     dispatch(authRequest());
     try {
         const res = await getUserRequest();
@@ -128,7 +131,7 @@ export const getUser = () => async (dispatch: AppDispatch) => {
     }
 }
 
-export const updateUser = (form: Partial<TRegisterData>) => async (dispatch: AppDispatch) => {
+export const updateUser = (form: Partial<TRegisterData>): AppThunk<Promise<TUserResponse>> => async (dispatch) => {
     dispatch(authRequest());
     try {
         const res = await updateUserRequest(form);

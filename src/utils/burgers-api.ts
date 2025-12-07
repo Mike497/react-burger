@@ -1,5 +1,6 @@
 import { getCookie, setCookie } from './cookies';
 import { TUser, TIngredient, TRegisterForm, TLoginForm, TUpdateUserForm } from './types';
+import { TOrder } from './types';
 
 const baseUrl = "https://norma.education-services.ru/api";
 
@@ -78,7 +79,7 @@ export const loadIngredients = (): Promise<TIngredientsResponse> => {
   return request<TIngredientsResponse>('/ingredients');
 };
 
-type TAuthResponse = TServerResponse<{
+export type TAuthResponse = TServerResponse<{
     user: TUser;
     accessToken: string;
     refreshToken: string;
@@ -100,7 +101,7 @@ export const loginRequest = (form: TLoginForm): Promise<TAuthResponse> => {
   });
 };
 
-type TServerMessageResponse = TServerResponse<{ message: string }>;
+export type TServerMessageResponse = TServerResponse<{ message: string }>;
 
 export const forgotPasswordRequest = (email: string): Promise<TServerMessageResponse> => {
   return request<TServerMessageResponse>(`/password-reset`, {
@@ -126,7 +127,7 @@ export const logoutRequest = (refreshToken: string | undefined): Promise<TServer
   });
 };
 
-type TUserResponse = TServerResponse<{ user: TUser }>;
+export type TUserResponse = TServerResponse<{ user: TUser }>;
 
 export const getUserRequest = (): Promise<TUserResponse> => {
     return fetchWithRefresh<TUserResponse>('/auth/user', {
@@ -147,4 +148,10 @@ export const updateUserRequest = (form: TUpdateUserForm): Promise<TUserResponse>
         },
         body: JSON.stringify(form)
     });
+};
+
+type TGetOrderResponse = TServerResponse<{ orders: TOrder[] }>;
+
+export const getOrderRequest = (orderNumber: string): Promise<TGetOrderResponse> => {
+    return request<TGetOrderResponse>(`/orders/${orderNumber}`);
 };

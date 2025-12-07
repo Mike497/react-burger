@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { postOrder } from '../utils/burgers-api';
 import { clearConstructor } from './constructorSlice';
-import { AppDispatch } from './store';
+import { AppThunk } from './store';
 
 type TOrderState = {
   isLoading: boolean;
@@ -15,7 +15,7 @@ const initialState: TOrderState = {
   orderNumber: null
 };
 
-const orderSlice = createSlice({
+export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
@@ -37,7 +37,7 @@ const orderSlice = createSlice({
   },
 });
 
-export const createOrder = (ingredientIds: string[]) => async (dispatch: AppDispatch) => {
+export const createOrder = (ingredientIds: string[]): AppThunk => async (dispatch) => {
   dispatch(createOrderRequest());
   try {
     const response = await postOrder(ingredientIds);
