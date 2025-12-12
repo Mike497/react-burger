@@ -18,13 +18,15 @@ Cypress.Commands.add('login', () => {
   });
 });
 
+const DROP_AREA_SELECTOR = '[data-testid=constructor-drop-area]';
+
 Cypress.Commands.add('dragIngredient', (ingredientName: string) => {
   cy.get(`[data-ingredient-name="${ingredientName}"]`)
     .first()
     .as('dragElement');
 
   cy.get('@dragElement').then($drag => {
-    cy.get('[data-testid=constructor-drop-area]').then($drop => {
+    cy.get(DROP_AREA_SELECTOR).then($drop => {
       const dragElement = $drag[0];
       const dropElement = $drop[0];
 

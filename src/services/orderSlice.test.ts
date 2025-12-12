@@ -1,4 +1,5 @@
 import orderReducer, {
+  initialState,
   createOrderRequest,
   createOrderSuccess,
   createOrderFailed,
@@ -6,11 +7,6 @@ import orderReducer, {
 } from './orderSlice';
 
 describe('order reducer test', () => {
-  const initialState = {
-    isLoading: false,
-    hasError: false,
-    orderNumber: null
-  };
 
   it('should return the initial state', () => {
     // @ts-ignore

@@ -8,7 +8,7 @@ type TUserFeedState = {
   error?: string;
 };
 
-const initialState: TUserFeedState = {
+export const initialState: TUserFeedState = {
   status: 'idle',
   orders: [],
 };

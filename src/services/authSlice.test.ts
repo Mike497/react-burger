@@ -1,4 +1,5 @@
 import authReducer, {
+  initialState,
   authRequest,
   authSuccess,
   authFailed,
@@ -8,12 +9,6 @@ import authReducer, {
 import { TUser } from '../utils/types';
 
 describe('auth reducer test', () => {
-  const initialState = {
-    user: null,
-    isLoading: false,
-    hasError: false,
-    isAuthChecked: false
-  };
 
   const mockUser: TUser = {
     name: 'Test User',

@@ -16,7 +16,7 @@ type TFeedState = {
   error?: string;
 };
 
-const initialState: TFeedState = {
+export const initialState: TFeedState = {
   status: 'idle',
   orders: [],
   total: 0,

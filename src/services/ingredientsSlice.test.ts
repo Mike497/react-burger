@@ -1,4 +1,5 @@
 import ingredientsReducer, {
+  initialState,
   ingredientsRequest,
   ingredientsSuccess,
   ingredientsFailed
@@ -6,11 +7,6 @@ import ingredientsReducer, {
 import { TIngredient } from '../utils/types';
 
 describe('ingredients reducer test', () => {
-  const initialState = {
-    isLoading: false,
-    hasError: false,
-    items: []
-  };
 
   const mockIngredients: TIngredient[] = [
     { _id: '1', name: 'Ingredient 1', type: 'bun', price: 10, image: '', proteins: 0, fat: 0, carbohydrates: 0, calories: 0, image_mobile: '', image_large: '' },

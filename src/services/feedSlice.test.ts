@@ -1,4 +1,5 @@
 import feedReducer, {
+  initialState,
   wsConnect,
   wsDisconnect,
   wsOpen,
@@ -19,13 +20,6 @@ type TMockFeedResponse = {
 
 
 describe('feed reducer test', () => {
-  const initialState: TFeedState = {
-    status: 'idle',
-    orders: [],
-    total: 0,
-    totalToday: 0,
-    error: undefined
-  };
 
   it('should return the initial state', () => {
     // @ts-ignore

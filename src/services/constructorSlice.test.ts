@@ -1,4 +1,5 @@
 import constructorReducer, {
+  initialState,
   addIngredient,
   removeIngredient,
   reorderIngredients,
@@ -7,10 +8,6 @@ import constructorReducer, {
 import { TIngredient } from '../utils/types';
 
 describe('constructor reducer test', () => {
-  const initialState = {
-    fillings: [],
-    bun: null
-  };
 
   const bunIngredient: TIngredient = { _id: 'bun1', name: 'Bun', type: 'bun', price: 100, image: '', proteins: 0, fat: 0, carbohydrates: 0, calories: 0, image_mobile: '', image_large: '' };
   const fillingIngredient1: TIngredient = { _id: 'fill1', name: 'Filling 1', type: 'main', price: 50, image: '', proteins: 0, fat: 0, carbohydrates: 0, calories: 0, image_mobile: '', image_large: '' };

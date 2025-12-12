@@ -1,10 +1,7 @@
-import detailsReducer, { selectIngredient, clearIngredient } from './detailsSlice';
+import detailsReducer, { initialState, selectIngredient, clearIngredient } from './detailsSlice';
 import { TIngredient } from '../utils/types';
 
 describe('details reducer test', () => {
-  const initialState = {
-    selectedIngredient: null
-  };
 
   const mockIngredient: TIngredient = {
     _id: '1',

@@ -1,4 +1,5 @@
 import userFeedReducer, {
+  initialState,
   userWsConnect,
   userWsDisconnect,
   userWsOpen,
@@ -11,11 +12,6 @@ import { TFeedResponse } from './feedSlice';
 type TUserFeedState = ReturnType<typeof userFeedReducer>;
 
 describe('user feed reducer test', () => {
-  const initialState: TUserFeedState = {
-    status: 'idle',
-    orders: [],
-    error: undefined,
-  };
 
   it('should return the initial state', () => {
     // @ts-ignore
