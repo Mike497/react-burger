@@ -43,6 +43,7 @@ const IngredientCard: React.FC<TIngredientCardProps> = ({ item }) => {
         ref={dragRef as unknown as Ref<HTMLElement>}
         className={styles.ingredientCard}
         style={{ opacity }}
+        data-ingredient-name={item.name}
       >
         {count > 0 && <Counter count={count} size="default" extraClass="m-1" />}
         <img
